@@ -39,6 +39,10 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2ParamsType;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 
+//yk
+import org.projectfloodlight.openflow.types.DatapathId;
+
+
 public class ConnectHost extends ApiHandler<Map<String, Object>> {
 
     Logger log = LogManager.getLogger(ConnectHost.class.getName());
@@ -50,7 +54,10 @@ public class ConnectHost extends ApiHandler<Map<String, Object>> {
         try {
             final Number tenantId = HandlerUtils.<Number>fetchField(
                     TenantHandler.TENANT, params, true, null);
-            final Number dpid = HandlerUtils.<Number>fetchField(
+            //yk
+            //final Number dpid = HandlerUtils.<Number>fetchField(
+            //        TenantHandler.VDPID, params, true, null);
+            final DatapathId dpid = HandlerUtils.<DatapathId>fetchField(
                     TenantHandler.VDPID, params, true, null);
             final Number port = HandlerUtils.<Number>fetchField(
                     TenantHandler.VPORT, params, true, null);
@@ -58,7 +65,9 @@ public class ConnectHost extends ApiHandler<Map<String, Object>> {
                     TenantHandler.MAC, params, true, null);
 
             HandlerUtils.isValidTenantId(tenantId.intValue());
-            HandlerUtils.isValidOVXPort(tenantId.intValue(), dpid.longValue(),
+            //yk
+            //HandlerUtils.isValidOVXPort(tenantId.intValue(), dpid.longValue(),
+            HandlerUtils.isValidOVXPort(tenantId.intValue(), dpid,
                     port.shortValue());
 
             final OVXMap map = OVXMap.getInstance();
@@ -66,7 +75,9 @@ public class ConnectHost extends ApiHandler<Map<String, Object>> {
                     .intValue());
             final MACAddress macAddr = MACAddress.valueOf(mac);
             HandlerUtils.isUniqueHostMAC(macAddr);
-            final Host host = virtualNetwork.connectHost(dpid.longValue(),
+            //yk
+            //final Host host = virtualNetwork.connectHost(dpid.longValue(),
+            final Host host = virtualNetwork.connectHost(dpid,
                     port.shortValue(), macAddr);
 
             if (host == null) {

@@ -42,6 +42,10 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2ParamsType;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 
+//yk
+import org.projectfloodlight.openflow.types.DatapathId;
+
+
 public class ConnectOVXRoute extends ApiHandler<Map<String, Object>> {
     final Logger log = LogManager.getLogger(ConnectOVXRoute.class.getName());
 
@@ -53,7 +57,10 @@ public class ConnectOVXRoute extends ApiHandler<Map<String, Object>> {
         try {
             final Number tenantId = HandlerUtils.<Number>fetchField(
                     TenantHandler.TENANT, params, true, null);
-            final Number dpid = HandlerUtils.<Long>fetchField(
+            //yk
+            //final Number dpid = HandlerUtils.<Long>fetchField(
+            //        TenantHandler.VDPID, params, true, null);
+            final DatapathId dpid = HandlerUtils.<DatapathId>fetchField(
                     TenantHandler.VDPID, params, true, null);
             final Number srcPort = HandlerUtils.<Number>fetchField(
                     TenantHandler.SRC_PORT, params, true, null);
@@ -67,11 +74,20 @@ public class ConnectOVXRoute extends ApiHandler<Map<String, Object>> {
             HandlerUtils.isValidTenantId(tenantId.intValue());
             // TODO: add check for bigswitch routing algorithm and deny if
             // non-manual (e.g., spf)?
+            //yk
+            /*
             HandlerUtils.isValidOVXBigSwitch(tenantId.intValue(),
                     dpid.longValue());
             HandlerUtils.isValidOVXPort(tenantId.intValue(), dpid.longValue(),
                     srcPort.shortValue());
             HandlerUtils.isValidOVXPort(tenantId.intValue(), dpid.longValue(),
+                    dstPort.shortValue());
+            */
+            HandlerUtils.isValidOVXBigSwitch(tenantId.intValue(),
+                    dpid);
+            HandlerUtils.isValidOVXPort(tenantId.intValue(), dpid,
+                    srcPort.shortValue());
+            HandlerUtils.isValidOVXPort(tenantId.intValue(), dpid,
                     dstPort.shortValue());
             final List<PhysicalLink> physicalLinks = HandlerUtils
                     .getPhysicalPath(pathString);
@@ -82,8 +98,11 @@ public class ConnectOVXRoute extends ApiHandler<Map<String, Object>> {
             final OVXNetwork virtualNetwork = map.getVirtualNetwork(tenantId
                     .intValue());
 
+            //yk
+            //final SwitchRoute virtualRoute = virtualNetwork.connectRoute(
+            //        dpid.longValue(), srcPort.shortValue(),
             final SwitchRoute virtualRoute = virtualNetwork.connectRoute(
-                    dpid.longValue(), srcPort.shortValue(),
+                    dpid, srcPort.shortValue(),
                     dstPort.shortValue(), physicalLinks, priority.byteValue());
             if (virtualRoute == null) {
                 resp = new JSONRPC2Response(

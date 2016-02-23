@@ -36,6 +36,9 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2ParamsType;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 
+//yk
+import org.projectfloodlight.openflow.types.DatapathId;
+
 public class StartOVXSwitch extends ApiHandler<Map<String, Object>> {
     Logger log = LogManager.getLogger(StartOVXSwitch.class.getName());
 
@@ -46,22 +49,32 @@ public class StartOVXSwitch extends ApiHandler<Map<String, Object>> {
         try {
             final Number tenantId = HandlerUtils.<Number>fetchField(
                     TenantHandler.TENANT, params, true, null);
-            final Number dpid = HandlerUtils.<Number>fetchField(
+            //yk
+            //final Number dpid = HandlerUtils.<Number>fetchField(
+            //        TenantHandler.VDPID, params, true, null);
+            final DatapathId dpid = HandlerUtils.<DatapathId>fetchField(
                     TenantHandler.VDPID, params, true, null);
 
 
             HandlerUtils.isValidTenantId(tenantId.intValue());
+            //yk
+            //HandlerUtils
+            //		.isValidOVXSwitch(tenantId.intValue(), dpid.longValue());
             HandlerUtils
-                    .isValidOVXSwitch(tenantId.intValue(), dpid.longValue());
+                    .isValidOVXSwitch(tenantId.intValue(), dpid);
 
             final OVXMap map = OVXMap.getInstance();
             final OVXNetwork virtualNetwork = map.getVirtualNetwork(tenantId
                     .intValue());
-            virtualNetwork.startSwitch(dpid.longValue());
+            //yk
+            //virtualNetwork.startSwitch(dpid.longValue());
+            virtualNetwork.startSwitch(dpid);
 
             this.log.info("Start virtual switch {} in virtual network {}",
                     dpid, virtualNetwork.getTenantId());
-            OVXSwitch ovxSwitch = virtualNetwork.getSwitch(dpid.longValue());
+            //yk
+            //OVXSwitch ovxSwitch = virtualNetwork.getSwitch(dpid.longValue());
+            OVXSwitch ovxSwitch = virtualNetwork.getSwitch(dpid);
             Map<String, Object> reply = new HashMap<String, Object>(
                     ovxSwitch.getDBObject());
             reply.put(TenantHandler.TENANT, ovxSwitch.getTenantId());

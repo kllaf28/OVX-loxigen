@@ -37,6 +37,9 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2ParamsType;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 
+//yk
+import org.projectfloodlight.openflow.types.DatapathId;
+
 public class StopOVXPort extends ApiHandler<Map<String, Object>> {
     Logger log = LogManager.getLogger(StopOVXPort.class.getName());
 
@@ -48,28 +51,42 @@ public class StopOVXPort extends ApiHandler<Map<String, Object>> {
         try {
             final Number tenantId = HandlerUtils.<Number>fetchField(
                     TenantHandler.TENANT, params, true, null);
-            final Number dpid = HandlerUtils.<Number>fetchField(
+            //yk
+            //final Number dpid = HandlerUtils.<Number>fetchField(
+            //		TenantHandler.VDPID, params, true, null);
+            final DatapathId dpid = HandlerUtils.<DatapathId>fetchField(
                     TenantHandler.VDPID, params, true, null);
             final Number port = HandlerUtils.<Number>fetchField(
                     TenantHandler.VPORT, params, true, null);
 
             HandlerUtils.isValidTenantId(tenantId.intValue());
+            //yk
+            /*
             HandlerUtils
                     .isValidOVXSwitch(tenantId.intValue(), dpid.longValue());
             HandlerUtils.isValidOVXPort(tenantId.intValue(), dpid.longValue(),
                     port.shortValue());
-
+             */
+            HandlerUtils
+                    .isValidOVXSwitch(tenantId.intValue(), dpid);
+            HandlerUtils.isValidOVXPort(tenantId.intValue(), dpid,
+                    port.shortValue());
 
             final OVXMap map = OVXMap.getInstance();
             final OVXNetwork virtualNetwork = map.getVirtualNetwork(tenantId
                     .intValue());
 
-            virtualNetwork.stopPort(dpid.longValue(), port.shortValue());
+            //yk
+            //virtualNetwork.stopPort(dpid.longValue(), port.shortValue());
+            virtualNetwork.stopPort(dpid, port.shortValue());
 
             this.log.info(
                     "Stop virtual port {} on virtual switch {} in virtual network {}",
                     port, dpid, virtualNetwork.getTenantId());
-            OVXPort ovxPort = virtualNetwork.getSwitch(dpid.longValue())
+            //yk
+            //OVXPort ovxPort = virtualNetwork.getSwitch(dpid.longValue())
+            //        .getPort(port.shortValue());
+            OVXPort ovxPort = virtualNetwork.getSwitch(dpid)
                     .getPort(port.shortValue());
             Map<String, Object> reply = new HashMap<String, Object>(
                     ovxPort.getDBObject());

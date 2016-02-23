@@ -34,6 +34,10 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2ParamsType;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 
+//yk
+import org.projectfloodlight.openflow.types.DatapathId;
+
+
 public class RemoveOVXSwitch extends ApiHandler<Map<String, Object>> {
 
     Logger log = LogManager.getLogger(RemoveOVXSwitch.class.getName());
@@ -46,18 +50,26 @@ public class RemoveOVXSwitch extends ApiHandler<Map<String, Object>> {
         try {
             final Number tenantId = HandlerUtils.<Number>fetchField(
                     TenantHandler.TENANT, params, true, null);
-            final Number dpid = HandlerUtils.<Number>fetchField(
+            //yk
+            //final Number dpid = HandlerUtils.<Number>fetchField(
+            //        TenantHandler.VDPID, params, true, null);
+            final DatapathId dpid = HandlerUtils.<DatapathId>fetchField(
                     TenantHandler.VDPID, params, true, null);
 
 
             HandlerUtils.isValidTenantId(tenantId.intValue());
+            //yk
+            //HandlerUtils
+            //		.isValidOVXSwitch(tenantId.intValue(), dpid.longValue());
             HandlerUtils
-                    .isValidOVXSwitch(tenantId.intValue(), dpid.longValue());
+                    .isValidOVXSwitch(tenantId.intValue(), dpid);
 
             final OVXMap map = OVXMap.getInstance();
             final OVXNetwork virtualNetwork = map.getVirtualNetwork(tenantId
                     .intValue());
-            virtualNetwork.removeSwitch(dpid.longValue());
+            //yk
+            //virtualNetwork.removeSwitch(dpid.longValue());
+            virtualNetwork.removeSwitch(dpid);
 
             this.log.info("Removed virtual switch {} in virtual network {}",
                     dpid, virtualNetwork.getTenantId());

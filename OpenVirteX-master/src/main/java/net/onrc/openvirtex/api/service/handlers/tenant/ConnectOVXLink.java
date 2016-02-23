@@ -39,6 +39,10 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2ParamsType;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 
+//yk
+import org.projectfloodlight.openflow.types.DatapathId;
+
+
 public class ConnectOVXLink extends ApiHandler<Map<String, Object>> {
 
     Logger log = LogManager.getLogger(ConnectOVXLink.class.getName());
@@ -50,11 +54,17 @@ public class ConnectOVXLink extends ApiHandler<Map<String, Object>> {
         try {
             final Number tenantId = HandlerUtils.<Number>fetchField(
                     TenantHandler.TENANT, params, true, null);
-            final Number srcDpid = HandlerUtils.<Number>fetchField(
+            //yk
+            //final Number srcDpid = HandlerUtils.<Number>fetchField(
+            //        TenantHandler.SRC_DPID, params, true, null);
+            final DatapathId srcDpid = HandlerUtils.<DatapathId>fetchField(
                     TenantHandler.SRC_DPID, params, true, null);
             final Number srcPort = HandlerUtils.<Number>fetchField(
                     TenantHandler.SRC_PORT, params, true, null);
-            final Number dstDpid = HandlerUtils.<Number>fetchField(
+            //yk
+            //final Number dstDpid = HandlerUtils.<Number>fetchField(
+            //        TenantHandler.DST_DPID, params, true, null);
+            final DatapathId dstDpid = HandlerUtils.<DatapathId>fetchField(
                     TenantHandler.DST_DPID, params, true, null);
             final Number dstPort = HandlerUtils.<Number>fetchField(
                     TenantHandler.DST_PORT, params, true, null);
@@ -65,7 +75,9 @@ public class ConnectOVXLink extends ApiHandler<Map<String, Object>> {
                     TenantHandler.BACKUPS, params, true, null);
 
             HandlerUtils.isValidTenantId(tenantId.intValue());
-            HandlerUtils.isValidOVXSwitch(tenantId.intValue(),
+            //yk
+            /*
+			HandlerUtils.isValidOVXSwitch(tenantId.intValue(),
                     srcDpid.longValue());
             HandlerUtils.isValidOVXSwitch(tenantId.intValue(),
                     dstDpid.longValue());
@@ -73,14 +85,30 @@ public class ConnectOVXLink extends ApiHandler<Map<String, Object>> {
                     srcDpid.longValue(), srcPort.shortValue());
             HandlerUtils.isValidOVXPort(tenantId.intValue(),
                     dstDpid.longValue(), dstPort.shortValue());
+             */
+            HandlerUtils.isValidOVXSwitch(tenantId.intValue(),
+                    srcDpid);
+            HandlerUtils.isValidOVXSwitch(tenantId.intValue(),
+                    dstDpid);
+            HandlerUtils.isValidOVXPort(tenantId.intValue(),
+                    srcDpid, srcPort.shortValue());
+            HandlerUtils.isValidOVXPort(tenantId.intValue(),
+                    dstDpid, dstPort.shortValue());
 
             final OVXMap map = OVXMap.getInstance();
             final OVXNetwork virtualNetwork = map.getVirtualNetwork(tenantId
                     .intValue());
 
-            final OVXLink virtualLink = virtualNetwork.connectLink(
+            //yk
+            /*
+                    final OVXLink virtualLink = virtualNetwork.connectLink(
                     srcDpid.longValue(), srcPort.shortValue(),
                     dstDpid.longValue(), dstPort.shortValue(), alg,
+                    backupNumber.byteValue());
+             */
+            final OVXLink virtualLink = virtualNetwork.connectLink(
+                    srcDpid, srcPort.shortValue(),
+                    dstDpid, dstPort.shortValue(), alg,
                     backupNumber.byteValue());
 
 

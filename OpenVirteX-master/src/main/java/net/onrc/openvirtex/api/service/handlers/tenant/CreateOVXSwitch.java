@@ -39,6 +39,9 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2ParamsType;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 
+//yk
+import org.projectfloodlight.openflow.types.DatapathId;
+
 /**
  * Handler to create a virtual switch.
  */
@@ -54,24 +57,40 @@ public class CreateOVXSwitch extends ApiHandler<Map<String, Object>> {
         try {
             final Number tenantId = HandlerUtils.<Number>fetchField(
                     TenantHandler.TENANT, params, true, null);
+            //yk
+            /*
             final List<Number> dpids = HandlerUtils.<List<Number>>fetchField(
                     TenantHandler.DPIDS, params, true, null);
             final Long dp = HandlerUtils.<Number>fetchField(
                     TenantHandler.VDPID, params, false, 0).longValue();
+            */
+            final List<DatapathId> dpids = HandlerUtils.<List<DatapathId>>fetchField(
+                    TenantHandler.DPIDS, params, true, null);
+            final DatapathId dp = HandlerUtils.<DatapathId>fetchField(
+                    TenantHandler.VDPID, params, false, null);
 
             HandlerUtils.isValidTenantId(tenantId.intValue());
 
             final OVXMap map = OVXMap.getInstance();
             final OVXNetwork virtualNetwork = map.getVirtualNetwork(tenantId
                     .intValue());
+            //yk
+            /*
             final List<Long> longDpids = new ArrayList<Long>();
             for (final Number dpid : dpids) {
                 longDpids.add(dpid.longValue());
             }
+            */
+            final List<DatapathId> longDpids = new ArrayList<DatapathId>();
+            for (final DatapathId dpid : dpids) {
+                longDpids.add(dpid);
+            }
 
             HandlerUtils.isValidDPID(tenantId.intValue(), longDpids);
             final OVXSwitch ovxSwitch;
-            if (dp == 0) {
+            //yk
+            //if (dp == 0) {
+            if (dp == null) {
                 ovxSwitch = virtualNetwork.createSwitch(longDpids);
             } else {
                 ovxSwitch = virtualNetwork.createSwitch(longDpids, dp);

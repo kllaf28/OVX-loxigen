@@ -36,6 +36,9 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2ParamsType;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 
+//yk
+import org.projectfloodlight.openflow.types.DatapathId;
+
 public class DisconnectOVXRoute extends ApiHandler<Map<String, Object>> {
 
     Logger log = LogManager.getLogger(DisconnectOVXRoute.class.getName());
@@ -47,24 +50,37 @@ public class DisconnectOVXRoute extends ApiHandler<Map<String, Object>> {
         try {
             final Number tenantId = HandlerUtils.<Number>fetchField(
                     TenantHandler.TENANT, params, true, null);
-            final Number dpid = HandlerUtils.<Number>fetchField(
+            //yk
+            //final Number dpid = HandlerUtils.<Number>fetchField(
+            //        TenantHandler.VDPID, params, true, null);
+            final DatapathId dpid = HandlerUtils.<DatapathId>fetchField(
                     TenantHandler.VDPID, params, true, null);
             final Number routeId = HandlerUtils.<Number>fetchField(
                     TenantHandler.ROUTE, params, true, null);
 
             HandlerUtils.isValidTenantId(tenantId.intValue());
+            //yk
+            /*
             HandlerUtils.isValidOVXBigSwitch(tenantId.intValue(),
                     dpid.longValue());
             HandlerUtils.isValidRouteId(tenantId.intValue(), dpid.longValue(),
+                    routeId.intValue());
+            */
+            HandlerUtils.isValidOVXBigSwitch(tenantId.intValue(),
+                    dpid);
+            HandlerUtils.isValidRouteId(tenantId.intValue(), dpid,
                     routeId.intValue());
 
             final OVXMap map = OVXMap.getInstance();
             final OVXNetwork virtualNetwork = map.getVirtualNetwork(tenantId
                     .intValue());
-            final OVXSwitch sw = virtualNetwork.getSwitch(dpid.longValue());
+            //yk
+            //final OVXSwitch sw = virtualNetwork.getSwitch(dpid.longValue());
+            final OVXSwitch sw = virtualNetwork.getSwitch(dpid);
 
-            virtualNetwork
-                    .disconnectRoute(dpid.longValue(), routeId.intValue());
+            //yk
+            //virtualNetwork.disconnectRoute(dpid.longValue(), routeId.intValue());
+            virtualNetwork.disconnectRoute(dpid, routeId.intValue());
 
             this.log.info(
                     "Removed virtual switch route {} belonging to big-switch {} in virtual network {}",

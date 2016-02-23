@@ -38,6 +38,9 @@ import com.thetransactioncompany.jsonrpc2.JSONRPC2Error;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2ParamsType;
 import com.thetransactioncompany.jsonrpc2.JSONRPC2Response;
 
+//yk
+import org.projectfloodlight.openflow.types.DatapathId;
+
 public class SetOVXBigSwitchRouting extends ApiHandler<Map<String, Object>> {
 
     Logger log = LogManager.getLogger(SetOVXBigSwitchRouting.class.getName());
@@ -49,7 +52,10 @@ public class SetOVXBigSwitchRouting extends ApiHandler<Map<String, Object>> {
         try {
             final Number tenantId = HandlerUtils.<Number>fetchField(
                     TenantHandler.TENANT, params, true, null);
-            final Number dpid = HandlerUtils.<Number>fetchField(
+            //yk
+            //final Number dpid = HandlerUtils.<Number>fetchField(
+            //        TenantHandler.VDPID, params, true, null);
+            final DatapathId dpid = HandlerUtils.<DatapathId>fetchField(
                     TenantHandler.VDPID, params, true, null);
             final String alg = HandlerUtils.<String>fetchField(
                     TenantHandler.ALGORITHM, params, true, null);
@@ -57,27 +63,38 @@ public class SetOVXBigSwitchRouting extends ApiHandler<Map<String, Object>> {
                     TenantHandler.BACKUPS, params, true, null);
 
             HandlerUtils.isValidTenantId(tenantId.intValue());
-            HandlerUtils.isValidOVXBigSwitch(tenantId.intValue(),
-                    dpid.longValue());
+            //yk
+            //HandlerUtils.isValidOVXBigSwitch(tenantId.intValue(),
+            //        dpid.longValue());
+            HandlerUtils.isValidOVXBigSwitch(tenantId.intValue(),dpid);
 
             final OVXMap map = OVXMap.getInstance();
             final OVXNetwork virtualNetwork = map.getVirtualNetwork(tenantId
                     .intValue());
-
+            
+            //yk
+            //final RoutingAlgorithms algorithm = virtualNetwork
+            //        .setOVXBigSwitchRouting(dpid.longValue(), alg,
+            //                backupNumber.byteValue());
             final RoutingAlgorithms algorithm = virtualNetwork
-                    .setOVXBigSwitchRouting(dpid.longValue(), alg,
-                            backupNumber.byteValue());
+                    .setOVXBigSwitchRouting(dpid, alg, backupNumber.byteValue());
 
             if (algorithm == null) {
                 resp = new JSONRPC2Response(false, 0);
             } else {
                 this.log.info(
                         "Set routing algorithm {} for big-switch {} in virtual network {}",
+                        //yk
+                        //algorithm.getRoutingType().getValue(), virtualNetwork
+                        //.getSwitch(dpid.longValue()).getSwitchName(),
                         algorithm.getRoutingType().getValue(), virtualNetwork
-                                .getSwitch(dpid.longValue()).getSwitchName(),
+                                .getSwitch(dpid).getSwitchName(),
                         virtualNetwork.getTenantId());
+                //yk
+                //OVXBigSwitch ovxSwitch = (OVXBigSwitch) virtualNetwork
+                //        .getSwitch(dpid.longValue());
                 OVXBigSwitch ovxSwitch = (OVXBigSwitch) virtualNetwork
-                        .getSwitch(dpid.longValue());
+                        .getSwitch(dpid);
                 Map<String, Object> reply = new HashMap<String, Object>(
                         ovxSwitch.getDBObject());
                 reply.put(TenantHandler.TENANT, ovxSwitch.getTenantId());
