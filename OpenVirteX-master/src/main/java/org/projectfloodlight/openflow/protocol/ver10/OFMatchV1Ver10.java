@@ -32,7 +32,7 @@ import org.jboss.netty.buffer.ChannelBuffer;
 import com.google.common.hash.PrimitiveSink;
 import com.google.common.hash.Funnel;
 
-class OFMatchV1Ver10 implements OFMatchV1 {
+public class OFMatchV1Ver10 implements OFMatchV1 {
     private static final Logger logger = LoggerFactory.getLogger(OFMatchV1Ver10.class);
     // version: 1.0
     final static byte WIRE_VERSION = 1;

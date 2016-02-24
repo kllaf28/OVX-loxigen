@@ -40,13 +40,16 @@ import net.onrc.openvirtex.util.OVXUtil;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openflow.protocol.OFError.OFFlowModFailedCode;
-import org.openflow.protocol.OFFlowMod;
-import org.openflow.protocol.OFMatch;
-import org.openflow.protocol.Wildcards.Flag;
-import org.openflow.protocol.action.OFAction;
 
-public class OVXFlowMod extends OFFlowMod implements Devirtualizable {
+//by
+//import org.openflow.protocol.OFError.OFFlowModFailedCode;
+//import org.openflow.protocol.OFFlowMod;
+//import org.openflow.protocol.OFMatch;
+//import org.openflow.protocol.Wildcards.Flag;
+//import org.openflow.protocol.action.OFAction;
+import org.projectfloodlight.openflow.protocol.ver13.OFFlowModifyVer13;
+
+public class OVXFlowMod extends OFFlowModifyVer13 implements Devirtualizable {
 
 
     private final Logger log = LogManager.getLogger(OVXFlowMod.class.getName());
