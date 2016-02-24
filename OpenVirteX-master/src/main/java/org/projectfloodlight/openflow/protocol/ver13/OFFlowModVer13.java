@@ -25,7 +25,7 @@ import org.projectfloodlight.openflow.util.*;
 import org.projectfloodlight.openflow.exceptions.*;
 import org.jboss.netty.buffer.ChannelBuffer;
 
-abstract class OFFlowModVer13 {
+public abstract class OFFlowModVer13 {
     // version: 1.3
     final static byte WIRE_VERSION = 4;
     final static int MINIMUM_LENGTH = 56;
