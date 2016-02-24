@@ -33,8 +33,10 @@ import net.onrc.openvirtex.linkdiscovery.SwitchDiscoveryManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jboss.netty.util.HashedWheelTimer;
-import org.openflow.protocol.OFMessage;
-import org.openflow.protocol.OFPort;
+//yk
+//import org.openflow.protocol.OFMessage;
+//import org.openflow.protocol.OFPort;
+import org.projectfloodlight.openflow.types.DatapathId;
 
 /**
  *
@@ -266,7 +268,8 @@ public final class PhysicalNetwork extends
      * @param dpid the datapath ID
      * @return the discovery manager instance
      */
-    public SwitchDiscoveryManager getDiscoveryManager(long dpid) {
+    //public SwitchDiscoveryManager getDiscoveryManager(long dpid) {
+    public SwitchDiscoveryManager getDiscoveryManager(DatapathId dpid) {
         return this.discoveryManager.get(dpid);
     }
 

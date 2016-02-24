@@ -26,11 +26,24 @@ import net.onrc.openvirtex.util.MACAddress;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+//yk
+/*
 import org.openflow.protocol.OFMatch;
 import org.openflow.protocol.action.OFAction;
 import org.openflow.protocol.action.OFActionDataLayerDestination;
 import org.openflow.protocol.action.OFActionDataLayerSource;
 import org.openflow.protocol.action.OFActionVirtualLanIdentifier;
+*/
+import org.projectfloodlight.openflow.protocol.match.*;
+import org.projectfloodlight.openflow.types.MacAddress;
+import org.projectfloodlight.openflow.types.VlanVid;
+import org.projectfloodlight.openflow.protocol.OFFactories;
+import org.projectfloodlight.openflow.protocol.OFFactory;
+import org.projectfloodlight.openflow.protocol.OFVersion;
+import org.projectfloodlight.openflow.protocol.action.OFAction;
+import org.projectfloodlight.openflow.protocol.action.OFActionSetDlDst;
+import org.projectfloodlight.openflow.protocol.action.OFActionSetDlSrc;
+import org.projectfloodlight.openflow.protocol.action.OFActionSetVlanVid;
 
 /**
  * This class provides some useful methods to encapsulate/decapsulate the
@@ -44,9 +57,17 @@ public class OVXLinkUtils {
     private Integer tenantId;
     private Integer linkId;
     private Integer flowId;
-    private MACAddress srcMac;
-    private MACAddress dstMac;
-    private Short vlan;
+
+    //yk
+    //private MACAddress srcMac;
+    //private MACAddress dstMac;
+    private MacAddress srcMac;
+    private MacAddress dstMac;
+    private VlanVid vlan;
+    
+    //yk
+    private final OFFactory factory = OFFactories.getFactory(OFVersion.OF_13);
+    
 
     /**
      * Instantiates a new link utils instance. Never called by external classes.
@@ -57,7 +78,9 @@ public class OVXLinkUtils {
         this.flowId = 0;
         this.srcMac = null;
         this.dstMac = null;
-        this.vlan = 0;
+        //yk
+        //this.vlan = 0;
+        this.vlan = VlanVid.ofVlan(0);
     }
 
     /**
@@ -87,14 +110,22 @@ public class OVXLinkUtils {
      * @param dstMac
      *            the dst mac
      */
-    public OVXLinkUtils(final MACAddress srcMac, final MACAddress dstMac) {
+    //yk
+    //public OVXLinkUtils(final MACAddress srcMac, final MACAddress dstMac) {
+    public OVXLinkUtils(final MacAddress srcMac, final MacAddress dstMac) {
         this();
         this.srcMac = srcMac;
         this.dstMac = dstMac;
         final int vNets = OpenVirteXController.getInstance()
                 .getNumberVirtualNets();
+        //yk
+        /*
         final MACAddress mac = MACAddress
                 .valueOf((srcMac.toLong() & 0xFFFFFF) << 24 | dstMac.toLong()
+                        & 0xFFFFFF);
+        */
+        final MACAddress mac = MACAddress
+                .valueOf((srcMac.getLong() & 0xFFFFFF) << 24 | dstMac.getLong()
                         & 0xFFFFFF);
         this.tenantId = (int) (mac.toLong() >> 48 - vNets);
         final BitSet bmask = new BitSet((48 - vNets) / 2);
@@ -105,7 +136,9 @@ public class OVXLinkUtils {
         final int mask = OVXLinkUtils.bitSetToInt(bmask);
         this.linkId = (int) (mac.toLong() >> (48 - vNets) / 2) & mask;
         this.flowId = (int) mac.toLong() & mask;
-        this.vlan = 0;
+        //yk
+        //this.vlan = 0;
+        this.vlan = VlanVid.ofVlan(0);
     }
 
     /**
@@ -134,10 +167,14 @@ public class OVXLinkUtils {
                         | flowId.longValue());
         final Long src = mac.toLong() >> 24 & 0xFFFFFF;
         final Long dst = mac.toLong() & 0xFFFFFF;
-        this.srcMac = MACAddress.valueOf((long) 0xa42305 << 24 | src);
-        this.dstMac = MACAddress.valueOf((long) 0xa42305 << 24 | dst);
+
+        //yk
+        //this.srcMac = MACAddress.valueOf((long) 0xa42305 << 24 | src);
+        //this.dstMac = MACAddress.valueOf((long) 0xa42305 << 24 | dst);
+        this.srcMac = MacAddress.of((long) 0xa42305 << 24 | src);
+        this.dstMac = MacAddress.of((long) 0xa42305 << 24 | dst);
         // TODO: encapsulate the values in the vlan too
-        this.vlan = 0;
+        this.vlan = VlanVid.ofVlan(0);
     }
 
     /**
@@ -149,7 +186,9 @@ public class OVXLinkUtils {
      */
     public boolean isValid() {
         if (this.tenantId != 0 && this.linkId != 0 && this.flowId != 0) {
-            if (this.vlan != 0 || this.srcMac != null && this.dstMac != null) {
+            //yk
+        	//if (this.vlan != 0 || this.srcMac != null && this.dstMac != null) {
+        	if (this.vlan.getVlan() != 0 || this.srcMac != null && this.dstMac != null) {
                 return true;
             }
         }
@@ -188,7 +227,9 @@ public class OVXLinkUtils {
      *
      * @return the source MAC
      */
-    public MACAddress getSrcMac() {
+    //yk
+    //public MACAddress getSrcMac() {
+    public MacAddress getSrcMac() {
         return this.srcMac;
     }
 
@@ -197,7 +238,9 @@ public class OVXLinkUtils {
      *
      * @return the destination MAC
      */
-    public MACAddress getDstMac() {
+    //yk
+    //public MACAddress getDstMac() {
+    public MacAddress getDstMac() {
         return this.dstMac;
     }
 
@@ -206,7 +249,9 @@ public class OVXLinkUtils {
      *
      * @return the VLAN
      */
-    public Short getVlan() {
+    //yk
+    //public Short getVlan() {
+    public VlanVid getVlan() {
         return this.vlan;
     }
 
@@ -217,9 +262,11 @@ public class OVXLinkUtils {
      * @throws NetworkMappingException
      *             if the tenant ID is invalid
      */
-    public LinkedList<MACAddress> getOriginalMacAddresses()
+    //yk
+    //public LinkedList<MACAddress> getOriginalMacAddresses()
+    public LinkedList<MacAddress> getOriginalMacAddresses()
             throws NetworkMappingException {
-        final LinkedList<MACAddress> macList = OVXMap.getInstance()
+        final LinkedList<MacAddress> macList = OVXMap.getInstance()
                 .getVirtualNetwork(this.tenantId).getFlowManager()
                 .getFlowValues(this.flowId);
         return macList;
@@ -243,12 +290,18 @@ public class OVXLinkUtils {
      * @param match
      *            the OpenFlow match
      */
-    public void rewriteMatch(final OFMatch match) {
+    //yk
+    //public void rewriteMatch(final OFMatch match) {
+    public void rewriteMatch(final Match match) {
+    	
         final OVXLinkField linkField = OpenVirteXController.getInstance()
                 .getOvxLinkField();
         if (linkField == OVXLinkField.MAC_ADDRESS) {
-            match.setDataLayerSource(this.getSrcMac().toBytes());
-            match.setDataLayerDestination(this.getDstMac().toBytes());
+        	//yk
+            //match.setDataLayerSource(this.getSrcMac().toBytes());
+            //match.setDataLayerDestination(this.getDstMac().toBytes());
+        	match.setDataLayerSource(this.getSrcMac().getBytes());
+            match.setDataLayerDestination(this.getDstMac().getBytes());
         } else if (linkField == OVXLinkField.VLAN) {
             match.setDataLayerVirtualLan(this.getVlan());
         }
@@ -264,11 +317,17 @@ public class OVXLinkUtils {
         final OVXLinkField linkField = OpenVirteXController.getInstance()
                 .getOvxLinkField();
         if (linkField == OVXLinkField.MAC_ADDRESS) {
-            actions.add(new OFActionDataLayerSource(this.getSrcMac().toBytes()));
-            actions.add(new OFActionDataLayerDestination(this.getDstMac()
-                    .toBytes()));
+        	
+            //yk
+        	//actions.add(new OFActionDataLayerSource(this.getSrcMac().toBytes()));
+            //actions.add(new OFActionDataLayerDestination(this.getDstMac()
+            //        .toBytes()));
+        	actions.add(this.factory.actions().setDlSrc(this.getSrcMac()));
+            actions.add(this.factory.actions().setDlDst(this.getDstMac()));
         } else if (linkField == OVXLinkField.VLAN) {
-            actions.add(new OFActionVirtualLanIdentifier(this.getVlan()));
+            //yk
+        	//actions.add(new OFActionVirtualLanIdentifier(this.getVlan()));
+        	actions.add(this.factory.actions().setVlanVid(this.getVlan()));
         }
         return actions;
     }
@@ -283,13 +342,20 @@ public class OVXLinkUtils {
         final OVXLinkField linkField = OpenVirteXController.getInstance()
                 .getOvxLinkField();
         if (linkField == OVXLinkField.MAC_ADDRESS) {
-            LinkedList<MACAddress> macList;
+        	//yk
+        	//LinkedList<MACAddress> macList;
+        	LinkedList<MacAddress> macList;
             try {
                 macList = this.getOriginalMacAddresses();
+                //yk
+                /*
                 actions.add(new OFActionDataLayerSource(macList.get(0)
                         .toBytes()));
                 actions.add(new OFActionDataLayerDestination(macList.get(1)
                         .toBytes()));
+                */
+                actions.add(this.factory.actions().setDlSrc((macList.get(0))));
+                actions.add(this.factory.actions().setDlDst((macList.get(1))));
             } catch (NetworkMappingException e) {
                 OVXLinkUtils.log.error("Unable to restore actions: " + e);
             }

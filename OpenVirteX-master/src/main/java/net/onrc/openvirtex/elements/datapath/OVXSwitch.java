@@ -59,6 +59,8 @@ import org.jboss.netty.channel.Channel;
 //yk -->
 import org.projectfloodlight.openflow.types.DatapathId;
 import org.projectfloodlight.openflow.protocol.OFFactory;
+
+import org.projectfloodlight.openflow.util.LRULinkedHashMap;
 /*
 import org.openflow.protocol.OFFeaturesReply;
 import org.openflow.protocol.OFMessage;

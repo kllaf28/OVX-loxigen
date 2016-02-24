@@ -29,6 +29,9 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+//yk
+import org.projectfloodlight.openflow.types.MacAddress;
+
 import com.google.common.collect.HashBiMap;
 
 public class OVXFlowManager {
@@ -62,14 +65,15 @@ public class OVXFlowManager {
         }
         return flowId;
     }
-
-    public LinkedList<MACAddress> getFlowValues(final Integer flowId) {
-        final LinkedList<MACAddress> macList = new LinkedList<MACAddress>();
+    //yk
+    //public LinkedList<MACAddress> getFlowValues(final Integer flowId) {
+    public LinkedList<MacAddress> getFlowValues(final Integer flowId) {
+        final LinkedList<MacAddress> macList = new LinkedList<MacAddress>();
         final BigInteger dualMac = this.flowValues.get(flowId);
         if (dualMac != null) {
-            final MACAddress srcMac = MACAddress.valueOf(dualMac.shiftRight(48)
+            final MacAddress srcMac = MacAddress.of(dualMac.shiftRight(48)
                     .longValue());
-            final MACAddress dstMac = MACAddress.valueOf(dualMac.longValue());
+            final MacAddress dstMac = MacAddress.of(dualMac.longValue());
             macList.add(srcMac);
             macList.add(dstMac);
         }

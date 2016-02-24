@@ -29,7 +29,7 @@ import org.openflow.protocol.action.OFAction;
 */
 import org.projectfloodlight.openflow.protocol.match.Match;
 import org.projectfloodlight.openflow.protocol.match.MatchField;
-
+import org.projectfloodlight.openflow.protocol.action.OFAction;
 
 import net.onrc.openvirtex.elements.Mappable;
 import net.onrc.openvirtex.elements.OVXMap;

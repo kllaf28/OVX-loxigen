@@ -288,11 +288,7 @@ public class OVXFlowEntry implements Comparable<OVXFlowEntry> {
         return true;
     }
     
-  //if (findDisjoint(twcard, OFMatch.OFPFW_IN_PORT, intersect,
-    //        tmatch.getInputPort(), omatch.getInputPort())) {
-    
-    if (findDisjoint(tmatch, MatchField.IN_PORT, intersect,
-            tmatch.get(MatchField.IN_PORT), omatch.get(MatchField.IN_PORT))) {
+
     /**
      * determine if fields are disjoint, for byte arrays.
      *

@@ -52,6 +52,8 @@ import net.onrc.openvirtex.packet.Ethernet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+//yk
+/*
 import org.openflow.protocol.OFFlowMod;
 import org.openflow.protocol.OFPacketOut;
 import org.openflow.protocol.OFPort;
@@ -59,6 +61,11 @@ import org.openflow.protocol.action.OFAction;
 import org.openflow.protocol.action.OFActionOutput;
 import org.openflow.protocol.action.OFActionType;
 import org.openflow.util.U8;
+*/
+import org.projectfloodlight.openflow.types.DatapathId;
+import org.projectfloodlight.openflow.protocol.OFActionType;
+import org.projectfloodlight.openflow.protocol.action.OFAction;
+import org.projectfloodlight.openflow.protocol.action.OFActionOutput;
 
 /**
  * This class presents an abstraction for a route within a big switch.
@@ -146,7 +153,9 @@ public class SwitchRoute extends Link<OVXPort, PhysicalSwitch> implements
     /**
      * @return The DPID of the virtual switch
      */
-    public long getSwitchId() {
+    //yk
+    //public long getSwitchId() {
+    public DatapathId getSwitchId() {
         return this.sw.getSwitchId();
     }
 

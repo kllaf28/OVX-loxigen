@@ -19,8 +19,14 @@ import java.util.BitSet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+//yk
+/*
 import org.openflow.protocol.OFPort;
 import org.openflow.util.U16;
+*/
+import org.projectfloodlight.openflow.types.U16;
+import org.projectfloodlight.openflow.types.OFPort;
 
 import net.onrc.openvirtex.core.OpenVirteXController;
 import net.onrc.openvirtex.elements.link.OVXLinkField;
@@ -31,7 +37,7 @@ public class BitSetIndex {
     private static Logger log = LogManager.getLogger(BitSetIndex.class.getName());
     private BitSet set;
     private IndexType type;
-
+    
     public enum IndexType {
         /*
          * Each index type is associated with the biggest index it can accept.
@@ -41,7 +47,8 @@ public class BitSetIndex {
         TENANT_ID((int) Math.pow(2, OpenVirteXController.getInstance()
                 .getNumberVirtualNets())), SWITCH_ID((int) Math.pow(2, 32)), LINK_ID(
                 getLinkMaxValue()), ROUTE_ID((int) Math.pow(2, 24)), PORT_ID(
-                U16.f(OFPort.OFPP_MAX.getValue())), FLOW_ID((int) Math.pow(2,
+                //U16.f(OFPort.OFPP_MAX.getValue())), FLOW_ID((int) Math.pow(2,
+        		U16.f((short)0xff00)), FLOW_ID((int) Math.pow(2,
                 24)), HOST_ID((int) Math.pow(2, 32)), FLOW_COUNTER(
                 getLinkMaxValue()), IP_ID((int) Math
                 .pow(2, (32 - OpenVirteXController.getInstance()

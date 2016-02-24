@@ -30,7 +30,9 @@ import org.jboss.netty.buffer.ChannelBuffer;
 import com.google.common.hash.PrimitiveSink;
 import com.google.common.hash.Funnel;
 
-class OFActionSetFieldVer13 implements OFActionSetField {
+//yk
+//class OFActionSetFieldVer13 implements OFActionSetField {
+public class OFActionSetFieldVer13 implements OFActionSetField {
     private static final Logger logger = LoggerFactory.getLogger(OFActionSetFieldVer13.class);
     // version: 1.3
     final static byte WIRE_VERSION = 4;
@@ -41,8 +43,9 @@ class OFActionSetFieldVer13 implements OFActionSetField {
     private final OFOxm<?> field;
 //
 
+    //yk
     // package private constructor - used by readers, builders, and factory
-    OFActionSetFieldVer13(OFOxm<?> field) {
+    protected OFActionSetFieldVer13(OFOxm<?> field) {
         if(field == null) {
             throw new NullPointerException("OFActionSetFieldVer13: property field cannot be null");
         }

@@ -15,8 +15,9 @@
  ******************************************************************************/
 package net.onrc.openvirtex.elements.datapath;
 
-import org.openflow.util.LRULinkedHashMap;
-
+//yk
+//import org.openflow.util.LRULinkedHashMap;
+import org.projectfloodlight.openflow.util.LRULinkedHashMap;
 /**
  * Based on Flowvisor XidTranslator by capveg.
  */

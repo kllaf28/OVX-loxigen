@@ -25,11 +25,15 @@ import net.onrc.openvirtex.protocol.OVXMatch;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.openflow.protocol.action.OFAction;
-import org.openflow.protocol.action.OFActionNetworkLayerDestination;
+
+//yk
+//import org.openflow.protocol.action.OFAction;
+//import org.openflow.protocol.action.OFActionNetworkLayerDestination;
+import org.projectfloodlight.openflow.protocol.action.OFAction;
+import org.projectfloodlight.openflow.protocol.action.OFActionSetNwDst;
 
 public class OVXActionNetworkLayerDestination extends
-        OFActionNetworkLayerDestination implements VirtualizableAction {
+        OFActionSetNwDst implements VirtualizableAction {
 
     private final Logger log = LogManager
             .getLogger(OVXActionNetworkLayerDestination.class.getName());
