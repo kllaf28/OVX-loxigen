@@ -34,7 +34,7 @@ import org.jboss.netty.buffer.ChannelBuffer;
 import com.google.common.hash.PrimitiveSink;
 import com.google.common.hash.Funnel;
 
-public class OFFlowModifyVer13 implements OFFlowModify {
+class OFFlowModifyVer13 implements OFFlowModify {
     private static final Logger logger = LoggerFactory.getLogger(OFFlowModifyVer13.class);
     // version: 1.3
     final static byte WIRE_VERSION = 4;
