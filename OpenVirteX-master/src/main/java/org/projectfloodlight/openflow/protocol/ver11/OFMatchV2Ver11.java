@@ -29,8 +29,9 @@ import java.util.Set;
 import org.jboss.netty.buffer.ChannelBuffer;
 import com.google.common.hash.PrimitiveSink;
 import com.google.common.hash.Funnel;
-
-class OFMatchV2Ver11 implements OFMatchV2 {
+//by
+//class OFMatchV2Ver11 implements OFMatchV2 {
+public class OFMatchV2Ver11 implements OFMatchV2 {
     private static final Logger logger = LoggerFactory.getLogger(OFMatchV2Ver11.class);
     // version: 1.1
     final static byte WIRE_VERSION = 2;

@@ -21,12 +21,15 @@ import net.onrc.openvirtex.elements.address.IPMapper;
 import net.onrc.openvirtex.messages.actions.OVXActionNetworkLayerDestination;
 import net.onrc.openvirtex.messages.actions.OVXActionNetworkLayerSource;
 
-import org.openflow.protocol.OFMatch;
-import org.openflow.protocol.Wildcards.Flag;
-import org.openflow.protocol.action.OFAction;
-import org.openflow.util.HexString;
-import org.openflow.util.U16;
-import org.openflow.util.U8;
+
+//by
+//import org.openflow.protocol.OFMatch;
+//import org.openflow.protocol.Wildcards.Flag;
+//import org.openflow.protocol.action.OFAction;
+//import org.openflow.util.HexString;
+//import org.openflow.util.U16;
+//import org.openflow.util.U8;
+import org.projectfloodlight.openflow.protocol.OFMatchV3;;
 
 /**
  * The Class OVXMatch. This class extends the OFMatch class, in order to carry
