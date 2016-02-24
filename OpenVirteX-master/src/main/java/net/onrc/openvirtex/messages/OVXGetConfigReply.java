@@ -15,11 +15,13 @@
  ******************************************************************************/
 package net.onrc.openvirtex.messages;
 
+//yk
+//import org.openflow.protocol.OFGetConfigReply;
+import org.projectfloodlight.openflow.protocol.ver13.*;
+
 import net.onrc.openvirtex.elements.datapath.PhysicalSwitch;
 
-import org.openflow.protocol.OFGetConfigReply;
-
-public class OVXGetConfigReply extends OFGetConfigReply implements
+public class OVXGetConfigReply extends OFGetConfigReplyVer13 implements
         Virtualizable {
 
     @Override

@@ -24,8 +24,10 @@ import net.onrc.openvirtex.messages.OVXFlowMod;
 import net.onrc.openvirtex.protocol.OVXMatch;
 import net.onrc.openvirtex.util.MACAddress;
 
-import org.openflow.protocol.OFMatch;
-import org.openflow.protocol.action.OFAction;
+//yk
+//import org.openflow.protocol.OFMatch;
+//import org.openflow.protocol.action.OFAction;
+import org.projectfloodlight.openflow.protocol.match.*;
 
 /**
  * Class representing a virtual flow entry - a wrapper for FlowMods that enables
@@ -75,18 +77,32 @@ public class OVXFlowEntry implements Comparable<OVXFlowEntry> {
      *            whether FlowMod from which the match came was strict or not.
      * @return Union enum representing the relationship
      */
-    public int compare(OFMatch omatch, boolean strict) {
+    
+    //yk
+    //public int compare(OFMatch omatch, boolean strict) {
+    public int compare(Match omatch, boolean strict) {
         // to allow pass by reference...in order: equal, superset, subset
         int[] intersect = new int[] {0, 0, 0};
 
-        OFMatch tmatch = this.flowmod.getMatch();
-        int twcard = tmatch.getWildcards();
-        int owcard = this.convertToWcards(omatch);
+        //yk
+        //OFMatch tmatch = this.flowmod.getMatch();
+        Match tmatch = this.flowmod.getMatch();
 
+        //주석으로
+        //int twcard = tmatch.getWildcards();
+        //int owcard = this.convertToWcards(omatch);
+        
         /* inport */
-        if ((twcard & OFMatch.OFPFW_IN_PORT) == (owcard & OFMatch.OFPFW_IN_PORT)) {
-            if (findDisjoint(twcard, OFMatch.OFPFW_IN_PORT, intersect,
-                    tmatch.getInputPort(), omatch.getInputPort())) {
+        //yk
+        //if ((twcard & OFMatch.OFPFW_IN_PORT) == (owcard & OFMatch.OFPFW_IN_PORT)) {
+        if ((tmatch.isPartiallyMasked(MatchField.IN_PORT)) == (omatch.isPartiallyMasked(MatchField.IN_PORT))) {
+            
+        	//yk
+        	//if (findDisjoint(twcard, OFMatch.OFPFW_IN_PORT, intersect,
+            //        tmatch.getInputPort(), omatch.getInputPort())) {
+            if (findDisjoint(tmatch, MatchField.IN_PORT, intersect,
+                    tmatch.get(MatchField.IN_PORT).getPortNumber(),
+                    omatch.get(MatchField.IN_PORT).getPortNumber())) {
                 return DISJOINT;
             }
         } else { /* check if super or subset */
@@ -259,15 +275,24 @@ public class OVXFlowEntry implements Comparable<OVXFlowEntry> {
      * @param val2
      * @return true if disjoint FlowEntries
      */
-    private boolean findDisjoint(int wcard, int field, int[] intersect,
+    
+    //yk
+    //private boolean findDisjoint(int wcard, int field, int[] intersect,
+    private boolean findDisjoint(Match tmatch, MatchField field, int[] intersect,
             Number val1, Number val2) {
-        if (((wcard & field) == field) || (val1.equals(val2))) {
+        if ((tmatch.isPartiallyMasked(field)) || (val1.equals(val2))) {
             updateIntersect(intersect, field);
             return false;
+            
         }
         return true;
     }
-
+    
+  //if (findDisjoint(twcard, OFMatch.OFPFW_IN_PORT, intersect,
+    //        tmatch.getInputPort(), omatch.getInputPort())) {
+    
+    if (findDisjoint(tmatch, MatchField.IN_PORT, intersect,
+            tmatch.get(MatchField.IN_PORT), omatch.get(MatchField.IN_PORT))) {
     /**
      * determine if fields are disjoint, for byte arrays.
      *

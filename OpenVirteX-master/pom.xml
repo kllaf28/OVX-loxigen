@@ -71,7 +71,6 @@
           </execution>
         </executions>
       </plugin>
- 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -292,11 +291,6 @@
     </repository>
   </repositories>
   <dependencies>
-<dependency>
-	<groupId>org.onosproject</groupId>
-	<artifactId>openflowj</artifactId>
-	<version>0.9.1.onos</version>
-</dependency>
     <dependency>
     <groupId>com.thetransactioncompany</groupId>
     <artifactId>jsonrpc2-base</artifactId>

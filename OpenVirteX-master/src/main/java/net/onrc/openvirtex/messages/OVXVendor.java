@@ -18,7 +18,9 @@ package net.onrc.openvirtex.messages;
 import net.onrc.openvirtex.elements.datapath.OVXSwitch;
 import net.onrc.openvirtex.elements.datapath.PhysicalSwitch;
 
-import org.openflow.protocol.OFVendor;
+//yk
+//import org.openflow.protocol.OFVendor;
+import org.projectfloodlight.openflow.protocol.ver13.*;;
 
 public class OVXVendor extends OFVendor implements Virtualizable,
         Devirtualizable {

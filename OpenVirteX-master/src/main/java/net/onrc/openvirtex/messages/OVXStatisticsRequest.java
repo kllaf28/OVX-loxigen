@@ -23,10 +23,14 @@ import net.onrc.openvirtex.messages.statistics.OVXVendorStatistics;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+//yk
+/*
 import org.openflow.protocol.OFStatisticsRequest;
 import org.openflow.protocol.statistics.OFStatistics;
+*/
+import org.projectfloodlight.openflow.protocol.ver13.OFStatsRequestVer13;
 
-public class OVXStatisticsRequest extends OFStatisticsRequest implements
+public class OVXStatisticsRequest extends OFStatsRequestVer13 implements
         Devirtualizable {
 
     private final Logger log = LogManager.getLogger(OVXStatisticsRequest.class
@@ -34,7 +38,9 @@ public class OVXStatisticsRequest extends OFStatisticsRequest implements
 
     @Override
     public void devirtualize(final OVXSwitch sw) {
-        switch (this.statisticType) {
+        //yk
+    	//switch (this.statisticType) {
+    	switch (this) {
         // Desc, vendor, table stats have no body. fuckers.
         case DESC:
             new OVXDescriptionStatistics().devirtualizeStatistic(sw, this);

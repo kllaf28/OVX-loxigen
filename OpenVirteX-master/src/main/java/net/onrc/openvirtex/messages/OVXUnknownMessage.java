@@ -18,9 +18,13 @@ package net.onrc.openvirtex.messages;
 import net.onrc.openvirtex.elements.datapath.OVXSwitch;
 import net.onrc.openvirtex.elements.datapath.PhysicalSwitch;
 
-import org.openflow.protocol.OFMessage;
+//yk
+//import org.openflow.protocol.OFMessage;
+import org.projectfloodlight.openflow.protocol.OFMessage;
 
-public class OVXUnknownMessage extends OFMessage implements Virtualizable,
+//yk
+//public class OVXUnknownMessage extends OFMessage implements Virtualizable,
+public class OVXUnknownMessage implements OFMessage, Virtualizable,
         Devirtualizable {
 
     @Override

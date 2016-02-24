@@ -17,7 +17,8 @@ package net.onrc.openvirtex.messages;
 
 import net.onrc.openvirtex.elements.datapath.OVXSwitch;
 
-import org.openflow.protocol.OFGetConfigRequest;
+//yk
+//import org.openflow.protocol.OFGetConfigRequest;
 
 public class OVXGetConfigRequest extends OFGetConfigRequest implements
         Devirtualizable {

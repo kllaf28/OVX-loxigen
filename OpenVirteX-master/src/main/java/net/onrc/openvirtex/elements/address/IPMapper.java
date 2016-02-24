@@ -20,9 +20,16 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+//yk
+/*
 import org.openflow.protocol.OFMatch;
 import org.openflow.protocol.Wildcards.Flag;
 import org.openflow.protocol.action.OFAction;
+*/
+import org.projectfloodlight.openflow.protocol.match.Match;
+import org.projectfloodlight.openflow.protocol.match.MatchField;
+
 
 import net.onrc.openvirtex.elements.Mappable;
 import net.onrc.openvirtex.elements.OVXMap;
@@ -73,40 +80,69 @@ public final class IPMapper {
         return 0;
     }
 
-    public static void rewriteMatch(final Integer tenantId, final OFMatch match) {
+    //yk
+    //public static void rewriteMatch(final Integer tenantId, final OFMatch match) {
+    public static void rewriteMatch(final Integer tenantId, final Match match) {
         match.setNetworkSource(getPhysicalIp(tenantId, match.getNetworkSource()));
         match.setNetworkDestination(getPhysicalIp(tenantId,
                 match.getNetworkDestination()));
     }
 
+    //yk
+    //public static List<OFAction> prependRewriteActions(final Integer tenantId,
+    //        final OFMatch match) {
     public static List<OFAction> prependRewriteActions(final Integer tenantId,
-            final OFMatch match) {
-        final List<OFAction> actions = new LinkedList<OFAction>();
-        if (!match.getWildcardObj().isWildcarded(Flag.NW_SRC)) {
+            final Match match) {
+    	final List<OFAction> actions = new LinkedList<OFAction>();
+    	
+    	//yk
+    	//if (!match.getWildcardObj().isWildcarded(Flag.NW_SRC)) {
+        if (!match.isPartiallyMasked(MatchField.IPV4_SRC)) {
             final OVXActionNetworkLayerSource srcAct = new OVXActionNetworkLayerSource();
+            //yk
+            //srcAct.setNetworkAddress(getPhysicalIp(tenantId,
+            //        match.getNetworkSource()));
             srcAct.setNetworkAddress(getPhysicalIp(tenantId,
-                    match.getNetworkSource()));
+                    match.get(MatchField.IPV4_SRC)));
             actions.add(srcAct);
         }
-        if (!match.getWildcardObj().isWildcarded(Flag.NW_DST)) {
+        
+        //yk
+        //if (!match.getWildcardObj().isWildcarded(Flag.NW_DST)) {
+        if (!match.isPartiallyMasked(MatchField.IPV4_DST)) {
             final OVXActionNetworkLayerDestination dstAct = new OVXActionNetworkLayerDestination();
+            
+            //yk
+            //dstAct.setNetworkAddress(getPhysicalIp(tenantId,
+            //        match.getNetworkDestination()));
             dstAct.setNetworkAddress(getPhysicalIp(tenantId,
-                    match.getNetworkDestination()));
+                    match.get(MatchField.IPV4_DST)));
             actions.add(dstAct);
         }
         return actions;
     }
 
-    public static List<OFAction> prependUnRewriteActions(final OFMatch match) {
+    //yk
+    //public static List<OFAction> prependUnRewriteActions(final OFMatch match) {
+    public static List<OFAction> prependUnRewriteActions(final Match match) {
+    	
         final List<OFAction> actions = new LinkedList<OFAction>();
-        if (!match.getWildcardObj().isWildcarded(Flag.NW_SRC)) {
+    	//yk
+    	//if (!match.getWildcardObj().isWildcarded(Flag.NW_SRC)) {
+    	if (!match.isPartiallyMasked(MatchField.IPV4_SRC)) {
             final OVXActionNetworkLayerSource srcAct = new OVXActionNetworkLayerSource();
-            srcAct.setNetworkAddress(match.getNetworkSource());
+            //yk
+            //srcAct.setNetworkAddress(match.getNetworkSource());
+            srcAct.setNetworkAddress(match.get(MatchField.IPV4_SRC));
             actions.add(srcAct);
         }
-        if (!match.getWildcardObj().isWildcarded(Flag.NW_DST)) {
+    	//yk
+    	//if (!match.getWildcardObj().isWildcarded(Flag.NW_DST)) {
+    	if (!match.isPartiallyMasked(MatchField.IPV4_DST)) {
             final OVXActionNetworkLayerDestination dstAct = new OVXActionNetworkLayerDestination();
-            dstAct.setNetworkAddress(match.getNetworkDestination());
+            //yk
+            //dstAct.setNetworkAddress(match.getNetworkDestination());
+            dstAct.setNetworkAddress(match.get(MatchField.IPV4_DST));
             actions.add(dstAct);
         }
         return actions;

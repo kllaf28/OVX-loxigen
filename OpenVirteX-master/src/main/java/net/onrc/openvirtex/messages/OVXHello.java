@@ -18,11 +18,24 @@ package net.onrc.openvirtex.messages;
 import net.onrc.openvirtex.elements.datapath.OVXSwitch;
 import net.onrc.openvirtex.elements.datapath.PhysicalSwitch;
 
-import org.openflow.protocol.OFHello;
+import java.util.List;
 
-public class OVXHello extends OFHello implements Virtualizable, Devirtualizable {
+import org.projectfloodlight.openflow.protocol.OFHelloElem;
+//yk
+//import org.openflow.protocol.OFHello;
+import org.projectfloodlight.openflow.protocol.ver13.OFHelloVer13;
 
-    @Override
+public class OVXHello extends OFHelloVer13 implements Virtualizable, Devirtualizable {
+
+	//yk
+	//added
+    OVXHello(long xid, List<OFHelloElem> elements) {
+		super(xid, elements);
+		// TODO Auto-generated constructor stub
+	}
+
+    
+	@Override
     public void devirtualize(final OVXSwitch sw) {
         // TODO: Log error, we should never receive this message here
         return;

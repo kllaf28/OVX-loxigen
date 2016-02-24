@@ -18,7 +18,9 @@
  */
 package net.onrc.openvirtex.elements.address;
 
-import org.openflow.util.U8;
+//yk
+//import org.openflow.util.U8;
+import org.projectfloodlight.openflow.types.U8;
 
 import net.onrc.openvirtex.packet.IPv4;
 

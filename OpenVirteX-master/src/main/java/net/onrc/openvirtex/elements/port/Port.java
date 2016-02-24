@@ -28,7 +28,9 @@ import java.util.Arrays;
 
 import net.onrc.openvirtex.util.MACAddress;
 
-import org.openflow.protocol.OFPhysicalPort;
+//yk
+//import org.openflow.protocol.OFPhysicalPort;
+import org.projectfloodlight.openflow.types.OFPort;
 
 /**
  * The Class Port.
